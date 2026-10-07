@@ -4,7 +4,7 @@ Proyecto_0.0_Piero_Serhii
 
 ## Objectiu
 
-Desplegar una infraestructura multicapa (Web Server, Network Monitor, SSH, BBDD, DHCP, DNS, FTP) sobre **AWS**, seguint les especificacions de l'activitat pràctica P0.0 del Mòdul 0379.
+Desplegar una infraestructura multicapa (Web Server, Network Monitor, SSH, BBDD, DHCP, DNS, FTP) sobre **IsardVDI**, seguint les especificacions de l'activitat pràctica P0.0 del Mòdul 0379.
 
 ## Equip
 
