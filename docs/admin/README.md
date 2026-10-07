@@ -1,9 +1,9 @@
-# Documentació administrador
+# Documentación administrador
 
-> Pendent d'omplir durant l'execució dels sprints.
+> Pendiente de completar durante la ejecución de los sprints.
 
-Aquí s'inclourà:
-- Arquitectura detallada i configuracions
-- Procediments d'instal·lació i desplegament
-- Manteniment, backups i recuperació
-- Pla de prevenció de riscos (RA3)
+Aquí se incluirá:
+- Arquitectura detallada y configuraciones
+- Procedimientos de instalación y despliegue
+- Mantenimiento, backups y recuperación
+- Plan de prevención de riesgos (RA3)

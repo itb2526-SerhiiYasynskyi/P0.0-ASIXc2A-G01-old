@@ -1,38 +1,38 @@
 # Arquitectura de la infraestructura
 
-## Entorn: IsardVDI
+## Entorno: IsardVDI
 
-Desplegament sobre màquines virtuals a IsardVDI, amb xarxes virtuals aïllades que simulen les 3 xarxes requerides (DMZ, Intranet, NAT/sortida a Internet).
+Despliegue sobre máquinas virtuales en IsardVDI, con redes virtuales aisladas que simulan las 3 redes requeridas (DMZ, Intranet, NAT/salida a Internet).
 
-## Màquines virtuals
+## Máquinas virtuales
 
-| Hostname | Rol | Xarxa | SO |
+| Hostname | Rol | Red | SO |
 |---|---|---|---|
-| `R-NCC` | Router (3 interfícies: DMZ, Intranet, NAT) + DHCP + DNS | DMZ + Intranet + NAT | Linux (Debian/Ubuntu) |
+| `R-NCC` | Router (3 interfaces: DMZ, Intranet, NAT) + DHCP + DNS | DMZ + Intranet + NAT | Linux (Debian/Ubuntu) |
 | `W-NCC` | Web Server | DMZ | Linux |
 | `F-NCC` | FTP Server (vsftpd) | DMZ | Linux |
 | `B-NCC` | BBDD (MySQL) | Intranet | Linux |
-| Client Windows | Client | Intranet | Windows |
-| Client Linux | Client | Intranet | Linux |
+| Cliente Windows | Cliente | Intranet | Windows |
+| Cliente Linux | Cliente | Intranet | Linux |
 
-## Xarxes
+## Redes
 
-- **DMZ** (ex: `192.168.10.0/24`): serveis exposats — `W-NCC`, `F-NCC`
-- **Intranet** (ex: `192.168.20.0/24`): serveis interns — `B-NCC`, clients
-- **NAT** (ex: `192.168.1.0/24` o xarxa d'Isard amb sortida a Internet): interfície del router cap a l'exterior
+- **DMZ** (ej: `192.168.10.0/24`): servicios expuestos — `W-NCC`, `F-NCC`
+- **Intranet** (ej: `192.168.20.0/24`): servicios internos — `B-NCC`, clientes
+- **NAT** (ej: `192.168.1.0/24` o red de Isard con salida a Internet): interfaz del router hacia el exterior
 
 ## Rol del router (`R-NCC`)
 
-- 3 interfícies de xarxa (una per xarxa)
-- **NAT/IP forwarding**: `iptables` per donar sortida a Internet a DMZ i Intranet
-- **DHCP**: `isc-dhcp-server` — assigna IPs a Intranet (i DMZ si cal)
-- **DNS**: `bind9` — resol `R-NCC`, `R`, `W-NCC`, `B-NCC`, `F-NCC` dins de les xarxes internes
-- Regles de firewall entre xarxes (DMZ no accedeix directament a Intranet sense passar pel router)
+- 3 interfaces de red (una por red)
+- **NAT/IP forwarding**: `iptables` para dar salida a Internet a DMZ e Intranet
+- **DHCP**: `isc-dhcp-server` — asigna IPs a Intranet (y DMZ si procede)
+- **DNS**: `bind9` — resuelve `R-NCC`, `R`, `W-NCC`, `B-NCC`, `F-NCC` dentro de las redes internas
+- Reglas de firewall entre redes (DMZ no accede directamente a Intranet sin pasar por el router)
 
-## Diagrama (text)
+## Diagrama (texto)
 
 ```
-                    Internet (xarxa Isard amb sortida)
+                    Internet (red Isard con salida)
                        │
                   ┌────┴────┐
                   │  R-NCC  │  (router: NAT + DHCP + DNS)
@@ -43,20 +43,20 @@ Desplegament sobre màquines virtuals a IsardVDI, amb xarxes virtuals aïllades 
          ┌────────────┘   └────────────┐
          │                             │
      ┌───┴────┐  ┌────────┐      ┌─────┴────┐  ┌──────────────┐
-     │ W-NCC  │  │ F-NCC  │      │  B-NCC   │  │ Client Win/  │
-     │  Web   │  │  FTP   │      │  MySQL   │  │ Client Linux │
+     │ W-NCC  │  │ F-NCC  │      │  B-NCC   │  │ Cliente Win/ │
+     │  Web   │  │  FTP   │      │  MySQL   │  │ Cliente Linux│
      └────────┘  └────────┘      └──────────┘  └──────────────┘
 ```
 
-## Usuari estàndard
+## Usuario estándar
 
-Tots els equips: `bchecker` / `bchecker121`
+Todos los equipos: `bchecker` / `bchecker121`
 
-## Millores previstes (bonus)
+## Mejoras previstas (bonus)
 
-- Segmentació de BBDD (normalització 1-m, n-m)
+- Segmentación de BBDD (normalización 1-m, n-m)
 - API REST (Flask) sobre la BBDD
-- Honeypot a la DMZ
-- Script de desplegament automatitzat
-- SSH amb port knocking al router/serveis exposats
-- (Opcional, si es disposa d'una màquina amb sortida pública real) DNS/domini públic + certificats TLS per FTP/Web
+- Honeypot en la DMZ
+- Script de despliegue automatizado
+- SSH con port knocking en el router/servicios expuestos
+- (Opcional, si se dispone de una máquina con salida pública real) DNS/dominio público + certificados TLS para FTP/Web

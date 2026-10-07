@@ -1,8 +1,8 @@
-# Documentació client
+# Documentación cliente
 
-> Pendent d'omplir durant l'execució dels sprints.
+> Pendiente de completar durante la ejecución de los sprints.
 
-Aquí s'inclourà:
-- Manual d'ús de l'aplicació
-- Guia d'instal·lació (perspectiva usuari)
-- Resolució de problemes habituals
+Aquí se incluirá:
+- Manual de uso de la aplicación
+- Guía de instalación (perspectiva usuario)
+- Resolución de problemas habituales

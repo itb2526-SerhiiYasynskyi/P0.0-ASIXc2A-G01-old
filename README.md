@@ -2,43 +2,43 @@
 
 Proyecto_0.0_Piero_Serhii
 
-## Objectiu
+## Objetivo
 
-Desplegar una infraestructura multicapa (Web Server, Network Monitor, SSH, BBDD, DHCP, DNS, FTP) sobre **IsardVDI**, seguint les especificacions de l'activitat pràctica P0.0 del Mòdul 0379.
+Desplegar una infraestructura multicapa (Web Server, Network Monitor, SSH, BBDD, DHCP, DNS, FTP) sobre **IsardVDI**, siguiendo las especificaciones de la actividad práctica P0.0 del Módulo 0379.
 
-## Equip
+## Equipo
 
 - Piero Ycaza
 - Sergi (Serhii) Yasynskyi
 
-## Durada
+## Duración
 
-6 setmanes (fins el 18/11), organitzat en 3 sprints quinzenals (10h/sprint).
+6 semanas (hasta el 18/11), organizado en 3 sprints quincenales (10h/sprint).
 
-## Estructura del repositori
+## Estructura del repositorio
 
 ```
 .
 ├── docs/
-│   ├── arquitectura/   → Diagrama i disseny de la infraestructura
-│   ├── client/         → Documentació orientada a l'usuari final
-│   └── admin/          → Documentació tècnica per a administradors
-├── scripts/            → Scripts de desplegament i automatització
-└── config/             → Fitxers de configuració (xarxa, serveis, etc.)
+│   ├── arquitectura/   → Diagrama y diseño de la infraestructura
+│   ├── client/         → Documentación orientada al usuario final
+│   └── admin/          → Documentación técnica para administradores
+├── scripts/            → Scripts de despliegue y automatización
+└── config/             → Ficheros de configuración (red, servicios, etc.)
 ```
 
-## Credencials estàndard
+## Credenciales estándar
 
-Tots els sistemes i aplicacions disposen de l'usuari:
-- **Usuari:** `bchecker`
-- **Contrasenya:** `bchecker121`
+Todos los sistemas y aplicaciones disponen del usuario:
+- **Usuario:** `bchecker`
+- **Contraseña:** `bchecker121`
 
-## Seguiment del projecte
+## Seguimiento del proyecto
 
-Planificació i backlog gestionats a ProofHub, projecte `P0.0-ASIXc2A-G08`.
+Planificación y backlog gestionados en ProofHub, proyecto `P0.0-ASIXc2A-G08`.
 
-## Enllaços
+## Enlaces
 
 - [Arquitectura](docs/arquitectura/README.md)
-- [Documentació client](docs/client/README.md)
-- [Documentació administrador](docs/admin/README.md)
+- [Documentación cliente](docs/client/README.md)
+- [Documentación administrador](docs/admin/README.md)
