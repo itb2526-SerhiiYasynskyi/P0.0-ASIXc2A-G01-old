@@ -12,18 +12,22 @@ Según el enunciado: *"Quan s'indica els noms dels equips, NCC indica el número
 
 | Hostname | Rol | Red | SO |
 |---|---|---|---|
-| `R-N01` | Router (3 interfaces: DMZ, Intranet, NAT) + DHCP + DNS | DMZ + Intranet + NAT | Linux (Debian/Ubuntu) |
-| `W-N02` | Web Server | DMZ | Linux |
-| `F-N03` | FTP Server (vsftpd) | DMZ | Linux |
-| `B-N04` | BBDD (MySQL) | Intranet | Linux |
-| `C-N05` | Cliente Windows | Intranet | Windows |
-| `C-N06` | Cliente Linux | Intranet | Linux |
+| `R-N01` | Router (3 interfaces: DMZ, Intranet, NAT) + DHCP + DNS | `Default` + `ASIXc2-ITB1` + `ASIXc2-ITB1a` | Linux (Debian/Ubuntu) |
+| `W-N02` | Web Server | `ASIXc2-ITB1` (DMZ) | Linux |
+| `F-N03` | FTP Server (vsftpd) | `ASIXc2-ITB1` (DMZ) | Linux |
+| `B-N04` | BBDD (MySQL) | `ASIXc2-ITB1a` (Intranet) | Linux |
+| `C-N05` | Cliente Windows | `ASIXc2-ITB1a` (Intranet) | Windows |
+| `C-N06` | Cliente Linux | `ASIXc2-ITB1a` (Intranet) | Linux |
 
 ## Redes
 
-- **DMZ** (ej: `192.168.10.0/24`): servicios expuestos — `W-N02`, `F-N03`
-- **Intranet** (ej: `192.168.20.0/24`): servicios internos — `B-N04`, clientes (`C-N05`, `C-N06`)
-- **NAT** (ej: `192.168.1.0/24` o red de Isard con salida a Internet): interfaz del router hacia el exterior
+Redes reales de IsardVDI utilizadas (compartidas a nivel de grupo/curso, no personales):
+
+- **NAT**: red `Default` — salida a Internet, interfaz del router hacia el exterior
+- **DMZ**: red `ASIXc2-ITB1` — servicios expuestos: `W-N02`, `F-N03`
+- **Intranet**: red `ASIXc2-ITB1a` — servicios internos: `B-N04`, clientes (`C-N05`, `C-N06`)
+
+> Nota: las redes `PersonalN` de Isard son privadas por usuario (no compartidas entre Piero y Sergi) — comprobado con una prueba de ping entre VMs de ambos. Por eso se usan las redes `ASIXc2-ITB1`/`ASIXc2-ITB1a`, que sí son compartidas a nivel de grupo.
 
 ## Rol del router (`R-N01`)
 
