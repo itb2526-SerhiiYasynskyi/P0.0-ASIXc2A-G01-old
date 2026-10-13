@@ -1,4 +1,4 @@
-# Backlog del proyecto P0.0-ASIXc2A-G08
+# Backlog del proyecto P0.0-ASIXc2A-G01
 
 Lista completa y definitiva de tareas (priorizadas), con estimación en minutos.
 

@@ -1,4 +1,4 @@
-# P0.0-ASIXc2A-G08
+# P0.0-ASIXc2A-G01
 
 Proyecto_0.0_Piero_Serhii
 
@@ -35,7 +35,7 @@ Todos los sistemas y aplicaciones disponen del usuario:
 
 ## Seguimiento del proyecto
 
-Planificación y backlog gestionados en ProofHub, proyecto `P0.0-ASIXc2A-G08`.
+Planificación y backlog gestionados en ProofHub, proyecto `P0.0-ASIXc2A-G01`.
 
 ## Enlaces
 
