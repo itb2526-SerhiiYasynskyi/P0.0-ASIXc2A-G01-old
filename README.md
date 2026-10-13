@@ -9,7 +9,7 @@ Desplegar una infraestructura multicapa (Web Server, Network Monitor, SSH, BBDD,
 ## Equipo
 
 - Piero Ycaza
-- Sergi (Serhii) Yasynskyi
+- Serhii Yasynskyi
 
 ## Duración
 
