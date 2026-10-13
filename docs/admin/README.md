@@ -4,18 +4,22 @@
 
 ## 1. Arquitectura
 
-_Enlazar/resumir [docs/arquitectura](../arquitectura/README.md): diagrama, redes (Default/Personal1/Personal2), hostnames (R-N01, W-N02, F-N03, B-N04, C-N05, C-N06)._
+_Enlazar/resumir [docs/arquitectura](../arquitectura/README.md): diagrama, redes (Default/ASIXc2-ITB1/ASIXc2-ITB1a), hostnames (R-N01, W-N02, F-N03, B-N04, C-N05, C-N06)._
 
 ## 2. Inventario de equipos
 
 | Hostname | Rol | IP | Red | SO |
 |---|---|---|---|---|
-| R-N01 | Router + DHCP + DNS | | | |
-| W-N02 | Web Server | | | |
-| F-N03 | FTP Server | | | |
-| B-N04 | BBDD MySQL | | | |
-| C-N05 | Cliente Windows | | | |
-| C-N06 | Cliente Linux | | | |
+| R-N01 | Router + DHCP + DNS | | Default + ASIXc2-ITB1 + ASIXc2-ITB1a | Debian 13 Server |
+| W-N02 | Web Server | | ASIXc2-ITB1 | Debian 13 Server |
+| F-N03 | FTP Server | enp1s0 (ASIXc2-ITB1): sin IP (sin DHCP, pendiente IP estática) / enp2s0 (Default): 192.168.123.63 | ASIXc2-ITB1 + Default (temporal, para instalación) | Debian 13 Server |
+| B-N04 | BBDD MySQL | | ASIXc2-ITB1a | Debian 13 Server |
+| C-N05 | Cliente Windows | | ASIXc2-ITB1a | Windows |
+| C-N06 | Cliente Linux | | ASIXc2-ITB1a | Ubuntu Desktop |
+
+### Nota sobre acceso remoto (VPN)
+
+Se ha explorado el acceso SSH a las VMs mediante la red "Wireguard VPN" de IsardVDI (descargando `isard-vpn.conf` desde el portal). La conexión VPN se activa correctamente en el cliente (`nmcli` confirma `GENERAL.STATE: activada`), pero el `ping` a la IP de la VM dentro de esa red no llega — **problema abierto, pendiente de consultar con el profesorado/soporte de Isard**. Mientras tanto, la administración se realiza mediante la consola web de IsardVDI.
 
 ## 3. Procedimiento de instalación (paso a paso real, lo que se ha hecho)
 
