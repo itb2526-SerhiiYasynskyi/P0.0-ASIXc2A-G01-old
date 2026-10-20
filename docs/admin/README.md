@@ -90,7 +90,7 @@ sudo grep -v '^#' /etc/vsftpd.conf | grep -v '^$'
 
 ![vsftpd.conf por defecto](../img/F-N03/07-vsftpd-conf-por-defecto.png)
 
-**8. Configuración final de `vsftpd`.** La configuración se guarda en el repositorio ([`config/F-N03/vsftpd.conf`](../../config/F-N03/vsftpd.conf)) y se aplica con un script ([`scripts/F-N03-vsftpd.sh`](../../scripts/F-N03-vsftpd.sh)) que hace copia de seguridad de la configuración original (`/etc/vsftpd.conf.bak`), instala la nueva, crea la lista de usuarios permitidos y reinicia el servicio. Así el despliegue es reproducible y queda versionado en Git.
+**8. Configuración final de `vsftpd` mediante script.** En lugar de editar `/etc/vsftpd.conf` a mano en la VM, se han creado dos ficheros versionados en este repositorio: la configuración ([`config/F-N03/vsftpd.conf`](../../config/F-N03/vsftpd.conf)) y un script que la aplica ([`scripts/F-N03-vsftpd.sh`](../../scripts/F-N03-vsftpd.sh)). Ambos se subieron a GitHub, se descargaron en `F-N03` con `git clone` y se ejecutó el script. Así el despliegue es reproducible y queda registrado en Git.
 
 Cambios respecto a la configuración por defecto:
 
@@ -105,6 +105,19 @@ Cambios respecto a la configuración por defecto:
 | `pasv_enable`, `pasv_min_port`, `pasv_max_port` | `YES`, `40000`, `40100` | Modo pasivo con rango acotado, para poder abrirlo en el firewall |
 | `userlist_enable`, `userlist_file`, `userlist_deny` | `YES`, `/etc/vsftpd.userlist`, `NO` | Solo pueden entrar por FTP los usuarios de la lista (`bchecker`) |
 | `ssl_enable` | `NO` | El cifrado TLS se deja para la mejora de certificados |
+
+**Qué hace el script** (`scripts/F-N03-vsftpd.sh`), en orden:
+
+1. Comprueba que se ejecuta con permisos de root; si no, termina con un error.
+2. Localiza el fichero de configuración del repositorio a partir de su propia ruta.
+3. Instala `vsftpd` si no estuviera instalado.
+4. Hace una copia de seguridad de la configuración original en `/etc/vsftpd.conf.bak`, solo la primera vez (así una segunda ejecución no sobrescribe la copia original).
+5. Copia `config/F-N03/vsftpd.conf` a `/etc/vsftpd.conf`.
+6. Escribe `bchecker` en `/etc/vsftpd.userlist`, la lista de usuarios autorizados a entrar por FTP.
+7. Habilita `vsftpd` en el arranque y lo reinicia.
+8. Comprueba que el servicio escucha en el puerto 21; si no, termina con un error.
+
+El script se puede ejecutar varias veces sin efectos secundarios.
 
 **Despliegue en la VM** (el repositorio es público, basta con clonarlo):
 
