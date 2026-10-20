@@ -13,7 +13,7 @@ _Enlazar/resumir [docs/arquitectura](../arquitectura/README.md): diagrama, redes
 | R-N01 | Router + DHCP + DNS | | Default + ASIXc2-ITB1 + ASIXc2-ITB1a | Debian 13 Server |
 | W-N02 | Web Server | | ASIXc2-ITB1 | Debian 13 Server |
 | F-N03 | FTP Server | enp1s0 (ASIXc2-ITB1): sin IP (sin DHCP, pendiente IP estática) / enp2s0 (Default): 192.168.123.63 | ASIXc2-ITB1 + Default (temporal, para instalación) | Debian 13 Server |
-| B-N04 | BBDD MySQL | | ASIXc2-ITB1a | Debian 13 Server |
+| B-N04 | BBDD MySQL | enp1s0 (Default): 192.168.121.46 / enp2s0 (ASIXc2-ITB1a): sin IP (pendiente IP estática) | ASIXc2-ITB1a + Default (temporal, para instalación) | Debian 13 Server |
 | C-N05 | Cliente Windows | | ASIXc2-ITB1a | Windows |
 | C-N06 | Cliente Linux | | ASIXc2-ITB1a | Ubuntu Desktop |
 
@@ -107,6 +107,15 @@ sudo nano /etc/hosts        # 127.0.1.1  B-N04
 ![hostnamectl](../img/B-N04/02-hostnamectl.png)
 
 ![/etc/hosts](../img/B-N04/03-etc-hosts.png)
+
+**3. Verificación del usuario e interfaces.** `bchecker` pertenece al grupo `sudo`. `enp1s0` (`Default`) recibe `192.168.121.46/22` por DHCP; `enp2s0` (`ASIXc2-ITB1a`, Intranet) no recibe IPv4 porque no hay DHCP en esa red todavía (pendiente IP estática).
+
+```bash
+id bchecker
+ip a
+```
+
+![id e interfaces](../img/B-N04/04-id-bchecker-e-interfaces.png)
 
 **Pendiente:** instalación de MySQL, carga del CSV de equipamientos educativos, estructura de tablas (relaciones 1-m, n-m tras segmentación) e IP estática en la Intranet.
 
