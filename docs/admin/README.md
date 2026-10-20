@@ -90,7 +90,40 @@ sudo grep -v '^#' /etc/vsftpd.conf | grep -v '^$'
 
 ![vsftpd.conf por defecto](../img/F-N03/07-vsftpd-conf-por-defecto.png)
 
-**Pendiente:** configuración de `vsftpd.conf` (chroot, usuarios, modo pasivo) e IP estática en la DMZ.
+**8. Configuración final de `vsftpd`.** La configuración se guarda en el repositorio ([`config/F-N03/vsftpd.conf`](../../config/F-N03/vsftpd.conf)) y se aplica con un script ([`scripts/F-N03-vsftpd.sh`](../../scripts/F-N03-vsftpd.sh)) que hace copia de seguridad de la configuración original (`/etc/vsftpd.conf.bak`), instala la nueva, crea la lista de usuarios permitidos y reinicia el servicio. Así el despliegue es reproducible y queda versionado en Git.
+
+Cambios respecto a la configuración por defecto:
+
+| Directiva | Valor | Motivo |
+|---|---|---|
+| `listen` / `listen_ipv6` | `YES` / `NO` | `vsftpd` solo permite una de las dos; se usa IPv4 |
+| `anonymous_enable` | `NO` | Sin acceso anónimo |
+| `write_enable` | `YES` | Permite subir y modificar ficheros (por defecto no se puede) |
+| `local_umask` | `022` | Permisos por defecto de los ficheros subidos |
+| `chroot_local_user` | `YES` | Cada usuario queda enjaulado en su directorio personal |
+| `allow_writeable_chroot` | `YES` | Necesario para que el usuario pueda escribir en su carpeta enjaulada. Es un compromiso aceptado en el laboratorio |
+| `pasv_enable`, `pasv_min_port`, `pasv_max_port` | `YES`, `40000`, `40100` | Modo pasivo con rango acotado, para poder abrirlo en el firewall |
+| `userlist_enable`, `userlist_file`, `userlist_deny` | `YES`, `/etc/vsftpd.userlist`, `NO` | Solo pueden entrar por FTP los usuarios de la lista (`bchecker`) |
+| `ssl_enable` | `NO` | El cifrado TLS se deja para la mejora de certificados |
+
+**Despliegue en la VM** (el repositorio es público, basta con clonarlo):
+
+```bash
+sudo apt install -y git
+git clone https://github.com/itb2526-SerhiiYasynskyi/P0.0-ASIXc2A-G01.git
+cd P0.0-ASIXc2A-G01
+sudo bash scripts/F-N03-vsftpd.sh
+```
+
+Para recibir cambios posteriores del repositorio: `git pull`.
+
+**Comprobación:**
+
+```bash
+curl -u bchecker:bchecker121 ftp://localhost/
+```
+
+**Pendiente:** captura de la ejecución del script y de la comprobación, e IP estática en la DMZ.
 
 ### 3.5 BBDD B-N04
 
