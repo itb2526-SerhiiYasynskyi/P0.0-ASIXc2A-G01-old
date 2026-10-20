@@ -14,7 +14,7 @@ _Enlazar/resumir [docs/arquitectura](../arquitectura/README.md): diagrama, redes
 | W-N02 | Web Server | | ASIXc2-ITB1 | Debian 13 Server |
 | F-N03 | FTP Server | enp1s0 (ASIXc2-ITB1): sin IP (sin DHCP, pendiente IP estática) / enp2s0 (Default): 192.168.123.63 | ASIXc2-ITB1 + Default (temporal, para instalación) | Debian 13 Server |
 | B-N04 | BBDD MySQL | enp1s0 (Default): 192.168.121.46 / enp2s0 (ASIXc2-ITB1a): sin IP (pendiente IP estática) | ASIXc2-ITB1a + Default (temporal, para instalación) | Debian 13 Server |
-| C-N05 | Cliente Windows | | ASIXc2-ITB1a | Windows |
+| C-N05 | Cliente Windows | 169.254.19.84 (automática; pendiente DHCP de R-N01) | ASIXc2-ITB1a | Windows 11 24H2 |
 | C-N06 | Cliente Linux | | ASIXc2-ITB1a | Ubuntu Desktop |
 
 ### Nota sobre acceso remoto (VPN)
@@ -200,7 +200,52 @@ ip a
 **Pendiente:** instalación de MySQL, carga del CSV de equipamientos educativos, estructura de tablas (relaciones 1-m, n-m tras segmentación) e IP estática en la Intranet.
 
 ### 3.6 Clientes C-N05 / C-N06
-_Configuración de red, verificación DNS/DHCP._
+
+#### C-N05 (cliente Windows)
+
+**Creación de la VM:** plantilla *Windows 11 24H2_Isardvdi_v1* de IsardVDI. Se elige la variante sin GPU, ya que las plantillas con GPU consumen un recurso limitado compartido y no es necesario para un cliente. Red asignada: `ASIXc2-ITB1a` (Intranet). No se añade `Default`: el cliente debe salir a Internet a través del router `R-N01`.
+
+**1. Usuario `bchecker`.** La plantilla trae un usuario por defecto (`isard`), que se mantiene. Desde PowerShell como administrador se crea `bchecker`, se añade al grupo de administradores y se evita que su contraseña caduque (es la cuenta de verificación):
+
+```powershell
+net user bchecker bchecker121 /add
+net localgroup Administradores bchecker /add
+Set-LocalUser -Name bchecker -PasswordNeverExpires $true
+net user bchecker
+```
+
+> En Windows en español el grupo se llama `Administradores` (no `Administrators`).
+
+El resultado muestra `La contraseña expira: Nunca` y pertenencia a los grupos `Administradores` y `Usuarios`:
+
+![usuario bchecker](../img/C-N05/01-usuario-bchecker-administrador.png)
+
+**2. Nombre del equipo.** Se cambia a `C-N05` y se reinicia:
+
+```powershell
+Rename-Computer -NewName C-N05 -Restart
+```
+
+**3. Regla de firewall para ping.** Windows no responde a ICMP por defecto; se habilita para poder comprobar la conectividad (tarea "Verificar conectividad entre redes"):
+
+```powershell
+New-NetFirewallRule -DisplayName "ICMPv4 Echo" -Protocol ICMPv4 -IcmpType 8 -Action Allow
+```
+
+![regla ICMP](../img/C-N05/02-regla-firewall-icmp.png)
+
+**4. Estado de red.** `ipconfig /all` confirma el nombre `C-N05` y que el adaptador tiene DHCP habilitado pero aún no ha recibido concesión (`169.254.19.84`, dirección automática). Se configurará cuando `R-N01` ofrezca DHCP en la Intranet.
+
+```cmd
+ipconfig /all
+```
+
+![ipconfig](../img/C-N05/03-ipconfig-all.png)
+
+**Pendiente:** obtener IP por DHCP desde `R-N01`, comprobar DNS y probar el acceso FTP a `F-N03`.
+
+#### C-N06 (cliente Linux)
+_Pendiente (tarea de Piero)._
 
 ## 4. Credenciales
 
