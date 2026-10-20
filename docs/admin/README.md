@@ -82,7 +82,15 @@ sudo nano /etc/hosts        # 127.0.1.1  F-N03
 
 ![hostname y /etc/hosts](../img/F-N03/06-hostname-etc-hosts.png)
 
-**Pendiente:** configuración de `vsftpd.conf` (chroot, usuarios) e IP estática en la DMZ.
+**7. Configuración inicial de `vsftpd` (por defecto).** Antes de modificar nada se revisa la configuración que trae el paquete. Por defecto no permite escritura (`write_enable` ausente), no enjaula a los usuarios (`chroot_local_user` ausente), no define puertos pasivos y el usuario anónimo ya está deshabilitado:
+
+```bash
+sudo grep -v '^#' /etc/vsftpd.conf | grep -v '^$'
+```
+
+![vsftpd.conf por defecto](../img/F-N03/07-vsftpd-conf-por-defecto.png)
+
+**Pendiente:** configuración de `vsftpd.conf` (chroot, usuarios, modo pasivo) e IP estática en la DMZ.
 
 ### 3.5 BBDD B-N04
 
