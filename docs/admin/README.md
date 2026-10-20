@@ -33,7 +33,47 @@ _Configuración real de `iptables`, `isc-dhcp-server` (`/etc/dhcp/dhcpd.conf`), 
 _Paquetes instalados, configuración del servicio web._
 
 ### 3.4 FTP F-N03
-_Configuración de `vsftpd.conf`, chroot, usuarios._
+
+**Creación de la VM:** plantilla *Debian 13 Server* de IsardVDI. Redes asignadas: `ASIXc2-ITB1` (DMZ) y `Default` (acceso temporal a Internet para instalar paquetes). Se ha probado además la red `Wireguard VPN` (ver nota en la sección 2).
+
+**1. Interfaces de red.** `enp1s0` (`ASIXc2-ITB1`) no recibe IPv4 por no haber DHCP en la DMZ (queda pendiente IP estática). `enp2s0` (`Default`) recibe `192.168.123.63` por DHCP.
+
+![ip a](../img/F-N03/01-ip-a-interfaces.png)
+
+**2. Comprobación de `sshd` y rutas.** `sshd` escucha en `0.0.0.0:22` y no hay reglas de firewall bloqueando.
+
+![sshd y rutas](../img/F-N03/02-sshd-escucha-y-rutas.png)
+
+**3. Problema de DNS y solución.** `apt update` fallaba con *"error temporal en resoldre deb.debian.org"*. El `ping 8.8.8.8` funcionaba (hay conectividad) pero `/etc/resolv.conf` (generado por `dhcpcd`) estaba vacío. Solución:
+
+```bash
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+sudo apt update
+```
+
+> Nota: `dhcpcd` puede sobrescribir este fichero al reiniciar. Cuando el router `R-N01` ofrezca DNS propio, se configurará allí.
+
+![DNS y apt update](../img/F-N03/03-dns-resolv-y-apt-update.png)
+
+**4. Usuario `bchecker` e instalación de servicios.** La plantilla ya incluye el usuario `isard`, que se mantiene. Se crea `bchecker` con sudo y se instalan `openssh-server` y `vsftpd`:
+
+```bash
+sudo adduser bchecker            # contraseña: bchecker121
+sudo usermod -aG sudo bchecker
+sudo apt install -y openssh-server vsftpd
+```
+
+![usuario e instalación](../img/F-N03/04-usuario-bchecker-e-instalacion-ssh-vsftpd.png)
+
+**5. Servicios habilitados en el arranque:**
+
+```bash
+sudo systemctl enable --now ssh vsftpd
+```
+
+![systemctl enable](../img/F-N03/05-systemctl-enable-ssh-vsftpd.png)
+
+**Pendiente:** configuración de `vsftpd.conf` (chroot, usuarios) e IP estática en la DMZ.
 
 ### 3.5 BBDD B-N04
 _Instalación MySQL, carga del CSV, estructura de tablas (relaciones 1-m, n-m tras segmentación)._
