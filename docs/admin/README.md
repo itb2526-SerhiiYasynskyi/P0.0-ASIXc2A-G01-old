@@ -134,13 +134,35 @@ Ejecución del script: `vsftpd` queda habilitado y escuchando en el puerto 21. E
 
 ![ejecución del script](../img/F-N03/08-ejecucion-script-vsftpd.png)
 
-**Comprobación:**
+**Comprobación del servicio FTP.** Se prueba desde la propia máquina con `curl`:
 
 ```bash
+# fichero de prueba en el directorio personal de bchecker
+echo "prueba F-N03" | sudo -u bchecker tee /home/bchecker/prueba.txt
+
+# listado y descarga con el usuario bchecker
 curl -u bchecker:bchecker121 ftp://localhost/
+curl -u bchecker:bchecker121 ftp://localhost/prueba.txt
+
+# subida de un fichero (comprueba write_enable) y nuevo listado
+curl -T /etc/hostname -u bchecker:bchecker121 ftp://localhost/hostname.txt
+curl -u bchecker:bchecker121 ftp://localhost/
+
+# acceso anónimo (debe ser rechazado)
+curl ftp://localhost/
 ```
 
-**Pendiente:** captura de la ejecución del script y de la comprobación, e IP estática en la DMZ.
+Resultado:
+- El listado muestra `prueba.txt` y la descarga devuelve su contenido: el login, el directorio enjaulado y la lista de usuarios funcionan.
+
+![listado y descarga](../img/F-N03/09-prueba-ftp-listado-y-descarga.png)
+
+- La subida funciona (aparece `hostname.txt` en el segundo listado), por lo que la escritura está habilitada.
+- El acceso sin usuario termina con `curl: (67) Access denied: 530`: el acceso anónimo está deshabilitado.
+
+![subida y acceso anónimo](../img/F-N03/10-prueba-ftp-subida-y-anonimo.png)
+
+**Pendiente:** IP estática en la DMZ y pruebas desde otra máquina de la red.
 
 ### 3.5 BBDD B-N04
 
