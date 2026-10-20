@@ -117,6 +117,10 @@ sudo bash scripts/F-N03-vsftpd.sh
 
 Para recibir cambios posteriores del repositorio: `git pull`.
 
+Ejecución del script: `vsftpd` queda habilitado y escuchando en el puerto 21. El listado de `curl` sale vacío porque el directorio personal de `bchecker` aún no contiene ficheros.
+
+![ejecución del script](../img/F-N03/08-ejecucion-script-vsftpd.png)
+
 **Comprobación:**
 
 ```bash
