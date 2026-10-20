@@ -73,10 +73,42 @@ sudo systemctl enable --now ssh vsftpd
 
 ![systemctl enable](../img/F-N03/05-systemctl-enable-ssh-vsftpd.png)
 
+**6. Hostname.** La plantilla arranca con el nombre `debian`; según el enunciado debe ser `F-N03`:
+
+```bash
+sudo hostnamectl set-hostname F-N03
+sudo nano /etc/hosts        # 127.0.1.1  F-N03
+```
+
+![hostname y /etc/hosts](../img/F-N03/06-hostname-etc-hosts.png)
+
 **Pendiente:** configuración de `vsftpd.conf` (chroot, usuarios) e IP estática en la DMZ.
 
 ### 3.5 BBDD B-N04
-_Instalación MySQL, carga del CSV, estructura de tablas (relaciones 1-m, n-m tras segmentación)._
+
+**Creación de la VM:** plantilla *Debian 13 Server* de IsardVDI. Red asignada: `ASIXc2-ITB1a` (Intranet), más `Default` de forma temporal para instalar paquetes.
+
+**1. Usuario `bchecker`.** La plantilla ya incluye el usuario `isard`, que se mantiene. Se crea `bchecker` y se añade al grupo `sudo`:
+
+```bash
+sudo adduser bchecker            # contraseña: bchecker121
+sudo usermod -aG sudo bchecker
+```
+
+![usuario bchecker](../img/B-N04/01-usuario-bchecker.png)
+
+**2. Hostname.** Se cambia el nombre de `debian` a `B-N04`:
+
+```bash
+sudo hostnamectl set-hostname B-N04
+sudo nano /etc/hosts        # 127.0.1.1  B-N04
+```
+
+![hostnamectl](../img/B-N04/02-hostnamectl.png)
+
+![/etc/hosts](../img/B-N04/03-etc-hosts.png)
+
+**Pendiente:** instalación de MySQL, carga del CSV de equipamientos educativos, estructura de tablas (relaciones 1-m, n-m tras segmentación) e IP estática en la Intranet.
 
 ### 3.6 Clientes C-N05 / C-N06
 _Configuración de red, verificación DNS/DHCP._
