@@ -21,10 +21,23 @@ _Enlazar/resumir [docs/arquitectura](../arquitectura/README.md): diagrama, redes
 
 Se ha explorado el acceso SSH a las VMs mediante la red "Wireguard VPN" de IsardVDI (descargando `isard-vpn.conf` desde el portal). La conexión VPN se activa correctamente en el cliente (`nmcli` confirma `GENERAL.STATE: activada`), pero el `ping` a la IP de la VM dentro de esa red no llega — **problema abierto, pendiente de consultar con el profesorado/soporte de Isard**. Mientras tanto, la administración se realiza mediante la consola web de IsardVDI.
 
+### Plan de direccionamiento IP
+
+| Red | Subred | Direcciones |
+|---|---|---|
+| NAT (`Default`) | asignada por IsardVDI (DHCP) | `R-N01`: la que reciba, sin modificar |
+| DMZ (`ASIXc2-ITB1`) | `192.168.10.0/24` | `R-N01` `.1` (puerta de enlace y DNS), `W-N02` `.10`, `F-N03` `.20` |
+| Intranet (`ASIXc2-ITB1a`) | `192.168.20.0/24` | `R-N01` `.1` (puerta de enlace, DNS y DHCP), `B-N04` `.10`, clientes por DHCP en el rango `.50`-`.150` (`C-N05`, `C-N06`) |
+
+Criterio: los servidores (`W-N02`, `F-N03`, `B-N04`) llevan IP estática, para que las entradas DNS y las reglas del router no cambien; los clientes obtienen IP por DHCP desde `R-N01`. La puerta de enlace y el DNS se añaden en cada servidor cuando el NAT de `R-N01` esté operativo.
+
 ## 3. Procedimiento de instalación (paso a paso real, lo que se ha hecho)
 
 ### 3.1 Redes
-_Comandos/pasos exactos usados para crear/asignar las redes Default, Personal1, Personal2._
+
+Redes de IsardVDI utilizadas: `Default` (NAT, salida a Internet), `ASIXc2-ITB1` (DMZ) y `ASIXc2-ITB1a` (Intranet). Se descartaron las redes `Personal1`-`Personal6`: son privadas por usuario, por lo que las máquinas de dos compañeros conectadas a la misma red `PersonalN` no se ven entre sí. Las redes `ASIXc2-ITB1` y `ASIXc2-ITB1a`, asociadas al grupo, sí permiten la comunicación entre máquinas de ambos miembros.
+
+Las redes se asignan al crear cada VM, en *Hardware → Redes* del portal de IsardVDI. El router `R-N01` lleva las tres; el resto de equipos, solo la de su zona (más `Default` de forma temporal en los servidores, para poder instalar paquetes hasta que el NAT del router funcione).
 
 ### 3.2 Router R-N01 (NAT, DHCP, DNS)
 _Configuración real de `iptables`, `isc-dhcp-server` (`/etc/dhcp/dhcpd.conf`), `bind9` (zonas, `named.conf.local`)._
